@@ -18,7 +18,6 @@ namespace Bigon.WebUI
                             opt.MigrationsHistoryTable("Migrations");
                         });
                 });
-            builder.Services.AddRouting(cfg => cfg.LowercaseUrls = true);
             var app = builder.Build();
             app.UseStaticFiles();
             app.UseRouting();
@@ -26,6 +25,7 @@ namespace Bigon.WebUI
             {
                 cfg.MapControllerRoute("default", "{controller=home}/{action=index}/{id?}");
             });
+
             app.Run();
         }
     }
