@@ -12049,15 +12049,14 @@
 
                 <div class="col-md-5">
                     <div class="newsletter-box">
-                        <form method="post" action="/contact#Contact_template--15553210613811__1632029772ff39fad3" id="Contact_template--15553210613811__1632029772ff39fad3" accept-charset="UTF-8" class="contact-form">
-                            <input type="hidden" name="form_type" value="customer" /><input type="hidden" name="utf8" value="✓" /><div id="mc_embed_signup_scroll" class="mc-form">
+                        <form method="post" accept-charset="UTF-8" class="contact-form">
                                 <div id="mc-form" class="mc-form subscribe-form">
-                                    <input class="email subscribe" type="hidden" name="contact[tags]" value="newsletter">
-                                    <input class="email subscribe" type="email" name="contact[email]" id="Email" value=""
+                     
+                                    <input class="email subscribe" type="email" name="email" id="Email" value=""
                                            placeholder="email@@example.com" aria-label="email@@example.com" autocorrect="off" autocapitalize="off">
                                     <button type="submit" class="button submit" name="commit" id="Subscribe">Subscribe</button>
                                 </div>
-                            </div>
+                           
                         </form>
                     </div>
                 </div>
@@ -12126,3 +12125,27 @@
 
 
 </div>
+
+                                                       <script>
+
+                                                           $(document).ready(function(){
+                                                               $('form.contact-form').submit(function(e){
+                                                                   e.preventDefault();
+                                                                   let formData=new FormData(e.currentTarget);
+                                                                   $.ajax({
+                                                                       url:'@Url.Action("Subscribe")',
+                                                                       type:'POST',
+                                                                       data:formData,
+                                                                       processData:false,
+                                                                       contentType:false,
+                                                                       success:function(response){
+                                                                           console.log(response)
+                                                                       },
+                                                                       error:function(response){
+                                                                           console.error(response);
+                                                                       }
+                                                                   })
+                                                               });
+                                                           });
+
+                                                      </script>

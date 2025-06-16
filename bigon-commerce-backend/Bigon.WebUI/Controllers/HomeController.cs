@@ -16,5 +16,19 @@ namespace Bigon.WebUI.Controllers
         {
             return View();
         }
+        [HttpPost]
+        public IActionResult Subscribe(string email)
+        {
+            return Json(new
+            {
+                error=false,
+                email
+            });
+        }
+        [HttpPost]
+        public IActionResult SubscribeApprove(string email)
+        {
+            return Content("deyekki abune oldunuz");
+        }
     }
 }
