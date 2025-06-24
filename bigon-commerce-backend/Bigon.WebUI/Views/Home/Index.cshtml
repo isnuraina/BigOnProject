@@ -12125,27 +12125,35 @@
 
 
 </div>
+@section addjs{
+    <script>
 
-                                                       <script>
+        $(document).ready(function(){
+            $('form.contact-form').submit(function(e){
+                e.preventDefault();
+                let formData=new FormData(e.currentTarget);
+                $.ajax({
+                    url:'@Url.Action("Subscribe")',
+                    type:'POST',
+                    data:formData,
+                    processData:false,
+                    contentType:false,
+                    success:function(response){
+                        if(response.error==true){
+                            toastr.error(response.message,"Xeta!");
+                            return;
+                        }
+                        toastr.error(response.message,"Ugur!");
+                    },
+                    error:function(response){
+                        console.error("Server xetasi.Biraz sonra yeniden yoxlayin!","Xeta!");
+                    }
+                })
+            });
+        });
 
-                                                           $(document).ready(function(){
-                                                               $('form.contact-form').submit(function(e){
-                                                                   e.preventDefault();
-                                                                   let formData=new FormData(e.currentTarget);
-                                                                   $.ajax({
-                                                                       url:'@Url.Action("Subscribe")',
-                                                                       type:'POST',
-                                                                       data:formData,
-                                                                       processData:false,
-                                                                       contentType:false,
-                                                                       success:function(response){
-                                                                           console.log(response)
-                                                                       },
-                                                                       error:function(response){
-                                                                           console.error(response);
-                                                                       }
-                                                                   })
-                                                               });
-                                                           });
+    </script>
+}
 
-                                                      </script>
+
+                                                  

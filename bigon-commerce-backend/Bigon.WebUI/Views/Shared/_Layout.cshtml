@@ -62,6 +62,7 @@
 
     <link href="//bigon-5.myshopify.com/cdn/shop/t/17/assets/skin-theme.css?v=117120950232533358991709656611" rel="stylesheet" type="text/css" media="all" />
     <link href="//bigon-5.myshopify.com/cdn/shop/t/17/assets/theme-color.css?v=182629768884326306281709656611" rel="stylesheet" type="text/css" media="all" />
+    <link href="~/libs/toastr.js/toastr.min.css" rel="stylesheet" type="text/css" media="all" />
 
     <!-- Header hook for plugins ================================================== -->
     <script>window.performance && window.performance.mark && window.performance.mark('shopify.content_for_header.start');</script>
@@ -3064,6 +3065,8 @@
            ga('send', 'pageview');
 
     </script>
-
+    <script src="~/libs/toastr.js/toastr.min.js"></script>
+    <script src="~/libs/toastr.js/toastr.additional.js"></script>
+    @RenderSection("addjs",required:false)
 </body>
 </html>

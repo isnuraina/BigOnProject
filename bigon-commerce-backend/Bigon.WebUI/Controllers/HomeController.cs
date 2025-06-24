@@ -1,9 +1,27 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Bigon.WebUI.AppCode.Extensions;
+using Bigon.WebUI.AppCode.Services;
+using Bigon.WebUI.Models.Entities;
+using Bigon.WebUI.Models.Persistences;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Globalization;
+using System.Net;
+using System.Net.Mail;
+using System.Text.RegularExpressions;
+using System.Web;
 
 namespace Bigon.WebUI.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly DataContext db;
+        private readonly IEmailService emailService;
+
+        public HomeController(DataContext db,IEmailService emailService)
+        {
+            this.db = db;
+            this.emailService = emailService;
+        }
         public IActionResult Index()
         {
             return View();
@@ -17,18 +35,88 @@ namespace Bigon.WebUI.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Subscribe(string email)
+        public async Task <IActionResult> Subscribe(string email)
         {
-            return Json(new
+            if (!email.IsEmail())
             {
-                error=false,
-                email
+                return Json(new
+                {
+                    error = true,
+                    message=$"'{email}'email telebelerini odemir!"
+                });
+            }
+
+            var subscriber =await db.Subscribers.FirstOrDefaultAsync(m => m.Email.Equals(email));
+
+            if (subscriber!=null && subscriber.Approved)
+            {
+                return Json(new
+                {
+                    error = true,
+                    message = $"'{email}'bu e-poct adresine artiq abunelik tetbiq edilib!"
+                });
+            }
+            else if (subscriber != null && !subscriber.Approved)
+            {
+                return Json(new
+                {
+                    error = false,
+                    message = $"'{email}'bu e-poct adresini tesdiqlemesiniz!"
+                });
+            }
+            subscriber = new Subscriber();
+            subscriber.Email = email;
+            subscriber.CreatedAt = DateTime.Now;
+            await db.Subscribers.AddAsync(subscriber);
+            await db.SaveChangesAsync();
+
+            string token = $"#demo-{subscriber.Email}-{subscriber.CreatedAt:yyyy-MM-dd HH:mm:ss.fff}-bigon";
+
+            token = HttpUtility.UrlEncode(token);
+
+            string url = $"{Request.Scheme}://{Request.Host}/subscribe-approve?token={token}";
+
+
+            string message = $"Abuneliyinizi tesdiq etmek ucun <a href=\"{url}\">linklə</a> davam edin!";
+
+            await emailService.SendMailAsync(subscriber.Email, "Bigon Service",message);
+
+            return Json(new
+                {
+                    error = false,
+                    message = $"Abuneliyinizi tesdiq etmek ucun '{email}'bu e-poct adresine daxil olub size gonderilen linke kecid edin!"
             });
         }
-        [HttpPost]
-        public IActionResult SubscribeApprove(string email)
+        [Route("/subscribe-approve")]
+        public async Task< IActionResult> SubscribeApprove(string token)
         {
-            return Content("deyekki abune oldunuz");
+            string pattern = @"#demo-(?<email>[^-]*)-(?<date>\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}:\d{2}.\d{3})-bigon";
+            Match match=Regex.Match(token, pattern);
+            if (!match.Success)
+            {
+                return Content("token zedelidir!");
+            }
+            string email = match.Groups["email"].Value;
+            string dateStr = match.Groups["date"].Value;
+
+            if (!DateTime.TryParseExact(dateStr, "yyyy-MM-dd HH:mm:ss.fff", null, DateTimeStyles.None, out DateTime date))
+            {
+                return Content("token zedelidir");
+            }
+            var subscriber=await db.Subscribers.FirstOrDefaultAsync(m => m.Email.Equals(email) && m.CreatedAt==date);
+            if (subscriber==null)
+            {
+                return Content("token zedelidir");
+            }
+            if (!subscriber.Approved)
+            {
+                subscriber.Approved = true;
+                subscriber.ApprovedAt = DateTime.Now;
+            }
+            await db.SaveChangesAsync();
+
+            return Content($"Success: Email:{email}\n" +
+                $"Date:{date}");
         }
     }
 }

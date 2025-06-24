@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Bigon.WebUI.Models.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Bigon.WebUI.Models.Persistences
 {
@@ -8,6 +9,7 @@ namespace Bigon.WebUI.Models.Persistences
         {
             
         }
+        public DbSet<Subscriber> Subscribers { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
