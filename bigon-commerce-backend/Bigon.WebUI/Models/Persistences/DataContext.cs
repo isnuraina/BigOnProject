@@ -16,5 +16,9 @@ namespace Bigon.WebUI.Models.Persistences
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(DataContext).Assembly);
         }
+        public override int SaveChanges()
+        {
+            return base.SaveChanges();
+        }
     }
 }
