@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using Bigon.İnfrastructure.Entities;
 using Microsoft.EntityFrameworkCore;
-using Bigon.WebUI.Models.Entities;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Bigon.WebUI.Models.Persistences.Configurations
 {

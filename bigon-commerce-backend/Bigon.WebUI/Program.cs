@@ -1,7 +1,9 @@
-﻿using Bigon.WebUI.AppCode.Services;
+﻿using Bigon.Data;
+using Bigon.İnfrastructure.Services.Abstracts;
+using Bigon.İnfrastructure.Services.Concrates;
+using Bigon.İnfrastructure.Services.Configurations;
 using Bigon.WebUI.Models.Persistences;
 using Microsoft.EntityFrameworkCore;
-
 namespace Bigon.WebUI
 {
     public class Program
@@ -10,8 +12,8 @@ namespace Bigon.WebUI
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Services
             builder.Services.AddControllersWithViews();
+            DataServiceInjection.InstallDataServices(builder.Services, builder.Configuration);
 
             builder.Services.AddDbContext<DataContext>(cfg =>
             {
@@ -26,26 +28,28 @@ namespace Bigon.WebUI
             builder.Services.Configure<EmailOptions>(builder.Configuration.GetSection("emailAccount"));
 
             builder.Services.AddSingleton<IEmailService, EmailService>();
+            builder.Services.AddSingleton<IDateTimeService, DateTimeService>();
+            builder.Services.AddScoped<IIdentityService, IdentityService>();
+
+            //builder.Services.AddMediatR(cfg => {
+
+            //    cfg.RegisterServicesFromAssembly(typeof(IBusinessReferance).Assembly);
+
+            //});
 
             var app = builder.Build();
 
-            // Middleware pipeline
             app.UseStaticFiles();
 
             app.UseRouting();
 
-            // Əgər varsa avtorizasiya əlavə edin
-            // app.UseAuthorization();
-
-            // Endpoint-lər tək yerdə toplanır
+           
             app.UseEndpoints(endpoints =>
             {
-                // Area routelar
                 endpoints.MapControllerRoute(
                     name: "areas",
                     pattern: "{area:exists}/{controller=Dashboard}/{action=Index}/{id?}");
 
-                // Default route
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=home}/{action=index}/{id?}");
@@ -55,3 +59,8 @@ namespace Bigon.WebUI
         }
     }
 }
+
+
+
+
+

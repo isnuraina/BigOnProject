@@ -1,4 +1,4 @@
-﻿using Bigon.WebUI.Models.Entities.Commons;
+﻿using Bigon.İnfrastructure.Commons.Concrates;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
