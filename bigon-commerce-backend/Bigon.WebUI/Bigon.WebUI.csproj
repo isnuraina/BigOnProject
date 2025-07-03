@@ -215,4 +215,9 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.18" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Bigon.Data\Bigon.Data.csproj" />
+    <ProjectReference Include="..\Bigon.İnfrastructure\Bigon.İnfrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

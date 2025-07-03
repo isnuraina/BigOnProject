@@ -1,25 +1,24 @@
-﻿using Bigon.WebUI.AppCode.Extensions;
-using Bigon.WebUI.AppCode.Services;
-using Bigon.WebUI.Models.Entities;
+﻿using Bigon.İnfrastructure.Extensions;
+using Bigon.İnfrastructure.Services.Abstracts;
+using Bigon.İnfrastructure.Entities;
 using Bigon.WebUI.Models.Persistences;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
-using System.Net;
-using System.Net.Mail;
 using System.Text.RegularExpressions;
 using System.Web;
+using Bigon.İnfrastructure.Repositories;
 
 namespace Bigon.WebUI.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly DataContext db;
+        private readonly ISubscriberRepository subscriberRepository;
         private readonly IEmailService emailService;
 
-        public HomeController(DataContext db,IEmailService emailService)
+        public HomeController(ISubscriberRepository subscriberRepository,IEmailService emailService)
         {
-            this.db = db;
+            this.subscriberRepository = subscriberRepository;
             this.emailService = emailService;
         }
         public IActionResult Index()
@@ -46,7 +45,8 @@ namespace Bigon.WebUI.Controllers
                 });
             }
 
-            var subscriber =await db.Subscribers.FirstOrDefaultAsync(m => m.Email.Equals(email));
+            //var subscriber =await db.Subscribers.FirstOrDefaultAsync(m => m.Email.Equals(email));
+            var subscriber = subscriberRepository.Get(m => m.Email.Equals(email));
 
             if (subscriber!=null && subscriber.Approved)
             {
@@ -67,8 +67,12 @@ namespace Bigon.WebUI.Controllers
             subscriber = new Subscriber();
             subscriber.Email = email;
             subscriber.CreatedAt = DateTime.Now;
-            await db.Subscribers.AddAsync(subscriber);
-            await db.SaveChangesAsync();
+
+            subscriberRepository.Add(subscriber);
+            subscriberRepository.Save();
+
+            //await db.Subscribers.AddAsync(subscriber);
+            //await db.SaveChangesAsync();
 
             string token = $"#demo-{subscriber.Email}-{subscriber.CreatedAt:yyyy-MM-dd HH:mm:ss.fff}-bigon";
 
@@ -103,7 +107,8 @@ namespace Bigon.WebUI.Controllers
             {
                 return Content("token zedelidir");
             }
-            var subscriber=await db.Subscribers.FirstOrDefaultAsync(m => m.Email.Equals(email) && m.CreatedAt==date);
+            //var subscriber=await db.Subscribers.FirstOrDefaultAsync(m => m.Email.Equals(email) && m.CreatedAt==date);
+            var subscriber= subscriberRepository.Get(m => m.Email.Equals(email) && m.CreatedAt==date);
             if (subscriber==null)
             {
                 return Content("token zedelidir");
@@ -113,7 +118,8 @@ namespace Bigon.WebUI.Controllers
                 subscriber.Approved = true;
                 subscriber.ApprovedAt = DateTime.Now;
             }
-            await db.SaveChangesAsync();
+            //await db.SaveChangesAsync();
+            subscriberRepository.Save();
 
             return Content($"Success: Email:{email}\n" +
                 $"Date:{date}");
