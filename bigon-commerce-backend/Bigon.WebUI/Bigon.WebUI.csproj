@@ -202,6 +202,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="MediatR" Version="13.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.36" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.36">
       <PrivateAssets>all</PrivateAssets>
@@ -216,6 +217,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Bigon.Business\Bigon.Business.csproj" />
     <ProjectReference Include="..\Bigon.Data\Bigon.Data.csproj" />
     <ProjectReference Include="..\Bigon.İnfrastructure\Bigon.İnfrastructure.csproj" />
   </ItemGroup>

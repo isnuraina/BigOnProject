@@ -6,4 +6,17 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Modules\BrandsModule\Commands\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MediatR" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Bigon.Data\Bigon.Data.csproj" />
+    <ProjectReference Include="..\Bigon.İnfrastructure\Bigon.İnfrastructure.csproj" />
+  </ItemGroup>
+
 </Project>
