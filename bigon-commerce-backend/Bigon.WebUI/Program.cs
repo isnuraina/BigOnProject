@@ -1,4 +1,5 @@
-﻿using Bigon.Data;
+﻿using Bigon.Business;
+using Bigon.Data;
 using Bigon.İnfrastructure.Services.Abstracts;
 using Bigon.İnfrastructure.Services.Concrates;
 using Bigon.İnfrastructure.Services.Configurations;
@@ -13,7 +14,9 @@ namespace Bigon.WebUI
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddControllersWithViews();
+
             DataServiceInjection.InstallDataServices(builder.Services, builder.Configuration);
+
 
             builder.Services.AddDbContext<DataContext>(cfg =>
             {
@@ -25,17 +28,21 @@ namespace Bigon.WebUI
 
             builder.Services.AddRouting(cfg => cfg.LowercaseUrls = true);
 
+
+
+
             builder.Services.Configure<EmailOptions>(builder.Configuration.GetSection("emailAccount"));
 
             builder.Services.AddSingleton<IEmailService, EmailService>();
             builder.Services.AddSingleton<IDateTimeService, DateTimeService>();
             builder.Services.AddScoped<IIdentityService, IdentityService>();
 
-            //builder.Services.AddMediatR(cfg => {
+            builder.Services.AddMediatR(cfg =>
+            {
+                cfg.RegisterServicesFromAssembly(typeof(IBusinessReferance).Assembly);
+            });
 
-            //    cfg.RegisterServicesFromAssembly(typeof(IBusinessReferance).Assembly);
-
-            //});
+           
 
             var app = builder.Build();
 
