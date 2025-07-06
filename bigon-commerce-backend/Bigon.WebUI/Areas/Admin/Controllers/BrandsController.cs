@@ -1,10 +1,10 @@
-﻿using Bigon.Business.Modules.BrandsModule.Queries.BrandGetAllQuery;
-using Bigon.İnfrastructure.Entities;
-using Bigon.İnfrastructure.Repositories;
-using Bigon.WebUI.Models.Persistences;
+﻿using Bigon.Business.Modules.BrandsModule.Commands.BrandAddCommand;
+using Bigon.Business.Modules.BrandsModule.Commands.BrandEditCommand;
+using Bigon.Business.Modules.BrandsModule.Queries.BrandGetAllQuery;
+using Bigon.Business.Modules.BrandsModule.Queries.BrandGetByIdQuery;
+using Bigon.Business.Modules.ColorsModule.Queries.ColorGetByIdQuery;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace Bigon.WebUI.Areas.Admin.Controllers
 {
@@ -26,49 +26,39 @@ namespace Bigon.WebUI.Areas.Admin.Controllers
             return View(response);
         }
 
-        //public IActionResult Create()
-        //{
-        //    return View();
-        //}
-        //[HttpPost]
-        //public IActionResult Create(Brand model)
-        //{
-        //    brandRepository.Add(model);
-        //    brandRepository.Save();
-        //    //db.Brands.Add(model);
-        //    //db.SaveChanges();
-        //    return RedirectToAction(nameof(Index));
-        //}
-        //public IActionResult Details(int id)
-        //{
-        //    //var model = db.Brands.FirstOrDefault(m => m.Id == id);
-        //    var model = brandRepository.Get(m => m.Id == id);
-        //    if (model == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    return View(model);
-        //}
-        ////public IActionResult Edit(int id)
-        ////{
-        ////    var model = db.Brands.FirstOrDefault(m => m.Id == id);
-        ////    if (model == null)
-        ////    {
-        ////        return NotFound();
-        ////    }
-        ////    return View(model);
-        ////}
-        ////[HttpPost]
-        ////public IActionResult Edit(Brand model)
-        ////{
-        ////    model.LastModifiedAt = DateTime.Now;
-        ////    model.LastModifiedBy = 1;
-        ////    db.Entry(model).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-        ////    db.Entry(model).Property(m => m.CreatedAt).IsModified = false;
-        ////    db.Entry(model).Property(m => m.CreatedBy).IsModified = false;
-        ////    db.SaveChanges();
-        ////    return RedirectToAction(nameof(Index));
-        ////}
+        public async Task<IActionResult> Details(BrandGetByIdRequest request)
+        {
+            var response = await mediator.Send(request);
+
+            return View(response);
+        }
+
+
+        public IActionResult Create()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Create(BrandAddRequest model)
+        {
+            await mediator.Send(model);
+            return RedirectToAction(nameof(Index));
+        }
+
+
+
+        public async Task<IActionResult> Edit(BrandGetByIdRequest request)
+        {
+            var response = await mediator.Send(request);
+
+            return View(response);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Edit(BrandEditRequest request)
+        {
+            await mediator.Send(request);
+            return RedirectToAction(nameof(Index));
+        }
 
 
 

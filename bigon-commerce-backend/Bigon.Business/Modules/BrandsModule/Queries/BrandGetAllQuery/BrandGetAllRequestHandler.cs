@@ -23,8 +23,8 @@ namespace Bigon.Business.Modules.BrandsModule.Queries.BrandGetAllQuery
         public async Task<IEnumerable<Brand>> Handle(BrandGetAllRequest request, CancellationToken cancellationToken)
         {
 
-            var data = brandRepository.GetAll(m => m.DeletedBy == null); 
-            return await data.ToListAsync(cancellationToken);
+            var query = brandRepository.GetAll(m => m.DeletedBy == null); 
+            return await query.ToListAsync(cancellationToken);
          
         }
     }

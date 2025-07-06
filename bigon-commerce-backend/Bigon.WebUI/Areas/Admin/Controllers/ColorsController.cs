@@ -1,4 +1,5 @@
-﻿using Bigon.Business.Modules.ColorsModule.Commands.ColorAddCommand;
+﻿using Bigon.Business.Modules.BrandsModule.Queries.BrandGetByIdQuery;
+using Bigon.Business.Modules.ColorsModule.Commands.ColorAddCommand;
 using Bigon.Business.Modules.ColorsModule.Commands.ColorEditCommand;
 using Bigon.Business.Modules.ColorsModule.Commands.ColorRemoveCommand;
 using Bigon.Business.Modules.ColorsModule.Queries.ColorGetAllQuery;
@@ -28,7 +29,7 @@ namespace Bigon.WebUI.Areas.Admin.Controllers
             return View(response);
         }
 
-        public async Task<IActionResult> Details(ColorGetByIdRequest request)
+        public async Task<IActionResult> Details(BrandGetByIdRequest request)
         {
             var response= await mediator.Send(request);
             return View(response);
@@ -53,7 +54,7 @@ namespace Bigon.WebUI.Areas.Admin.Controllers
 
 
 
-        public async Task<IActionResult> Edit(ColorGetByIdRequest request)
+        public async Task<IActionResult> Edit(BrandGetByIdRequest request)
         {
             var response = await mediator.Send(request);
             return View(response);
