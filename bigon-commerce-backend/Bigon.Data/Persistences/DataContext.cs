@@ -38,11 +38,19 @@ namespace Bigon.Data.Persistences
                         case EntityState.Modified:
                             entry.Entity.LastModifiedBy = identityService.GetPrincipalId();
                             entry.Entity.LastModifiedAt = dateTimeService.ExecutingTime;
+
+                            entry.Property(m => m.CreatedBy).IsModified = false;
+                            entry.Property(m => m.CreatedAt).IsModified = false;
                             break;
                         case EntityState.Deleted:
                             entry.State = EntityState.Modified;
                             entry.Entity.DeletedBy = identityService.GetPrincipalId();
                             entry.Entity.DeletedAt = dateTimeService.ExecutingTime;
+
+                            entry.Property(m => m.CreatedBy).IsModified = false;
+                            entry.Property(m => m.CreatedAt).IsModified = false;
+                            entry.Property(m => m.LastModifiedBy).IsModified = false;
+                            entry.Property(m => m.LastModifiedAt).IsModified = false;
                             break;
                     }
                 }

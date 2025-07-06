@@ -1,4 +1,6 @@
 ﻿using Bigon.Business.Modules.ColorsModule.Commands.ColorAddCommand;
+using Bigon.Business.Modules.ColorsModule.Commands.ColorEditCommand;
+using Bigon.Business.Modules.ColorsModule.Commands.ColorRemoveCommand;
 using Bigon.Business.Modules.ColorsModule.Queries.ColorGetAllQuery;
 using Bigon.Business.Modules.ColorsModule.Queries.ColorGetByIdQuery;
 using Bigon.İnfrastructure.Entities;
@@ -51,28 +53,29 @@ namespace Bigon.WebUI.Areas.Admin.Controllers
 
 
 
-        ////public IActionResult Edit(int id)
-        ////{
-        ////    var model = db.Colors.FirstOrDefault(m => m.Id == id);
-        ////    if (model == null)
-        ////    {
-        ////        return NotFound();
-        ////    }
-        ////    return View(model);
-        ////}
-        ////[HttpPost]
-        ////public IActionResult Edit(Color model)
-        ////{
-        ////    model.LastModifiedAt = DateTime.Now;
-        ////    model.LastModifiedBy = 1;
-        ////    db.Entry(model).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-        ////    db.Entry(model).Property(m => m.CreatedAt).IsModified = false;
-        ////    db.Entry(model).Property(m => m.CreatedBy).IsModified = false;
-        ////    db.SaveChanges();
-        ////    return RedirectToAction(nameof(Index));
-        ////}
+        public async Task<IActionResult> Edit(ColorGetByIdRequest request)
+        {
+            var response = await mediator.Send(request);
+            return View(response);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Edit(ColorEditRequest request)
+        {
+            var response = await mediator.Send(request);
+            return RedirectToAction(nameof(Index));
+        }
 
-
+        [HttpPost]
+        public async Task< IActionResult> Delete(ColorRemoveRequest request)
+        {
+            await mediator.Send(request);
+            return Json(
+                    new
+                    {
+                        error = false,
+                        message = "Qeyd silindi!"
+                    });
+        }
 
         //public IActionResult Edit(int id)
         //{
@@ -100,32 +103,6 @@ namespace Bigon.WebUI.Areas.Admin.Controllers
         //    return RedirectToAction(nameof(Index));
         //}
 
-        //[HttpPost]
-        //public IActionResult Delete(int id)
-        //{
-        //    //var model = colorRepository.Get(m => m.Id == id);
-
-        //    //var model = db.Colors.FirstOrDefault(m => m.Id == id && m.DeletedBy==null);
-        //    //if (model == null)
-        //    //{
-        //    //    return Json(
-        //    //        new
-        //    //        {
-        //    //            error = true,
-        //    //            message = "Qeyd movcud deyil"
-        //    //        });
-        //    //}
-        //    //db.Colors.Remove(model);
-        //    //db.SaveChanges();
-        //    colorRepository.Remove(id);
-        //    colorRepository.Save();
-        //    return Json(
-        //            new
-        //            {
-        //                error = false,
-        //                message = "Qeyd silindi!"
-        //            });
-        //}
 
     }
 }
