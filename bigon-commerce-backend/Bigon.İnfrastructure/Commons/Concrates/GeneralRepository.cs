@@ -1,12 +1,6 @@
 ﻿using Bigon.İnfrastructure.Commons.Abstracts;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace Bigon.İnfrastructure.Commons.Concrates
 {
     public abstract class GeneralRepository<T> : IRepository<T> where T : class
@@ -27,7 +21,8 @@ namespace Bigon.İnfrastructure.Commons.Concrates
 
         public T Edit(T model)
         {
-            throw new NotImplementedException();
+            db.Entry(model).State = EntityState.Modified;
+            return model;
         }
 
         public T Get(Expression<Func<T, bool>> predicate = null)
@@ -44,9 +39,9 @@ namespace Bigon.İnfrastructure.Commons.Concrates
             return table.Where(predicate).AsQueryable();
         }
 
-        public void Remove(int id)
+        public void Remove(T model)
         {
-            throw new NotImplementedException();
+            table.Remove(model);
         }
 
         public int Save()
