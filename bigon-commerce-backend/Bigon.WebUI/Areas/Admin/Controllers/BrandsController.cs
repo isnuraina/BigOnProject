@@ -1,10 +1,12 @@
 ﻿using Bigon.Business.Modules.BrandsModule.Commands.BrandAddCommand;
 using Bigon.Business.Modules.BrandsModule.Commands.BrandEditCommand;
+using Bigon.Business.Modules.BrandsModule.Commands.BrandRemoveCommand;
 using Bigon.Business.Modules.BrandsModule.Queries.BrandGetAllQuery;
 using Bigon.Business.Modules.BrandsModule.Queries.BrandGetByIdQuery;
 using Bigon.Business.Modules.ColorsModule.Queries.ColorGetByIdQuery;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace Bigon.WebUI.Areas.Admin.Controllers
 {
@@ -62,54 +64,36 @@ namespace Bigon.WebUI.Areas.Admin.Controllers
 
 
 
-        //public IActionResult Edit(int id)
-        //{
-        //    //var model = db.Brands.FirstOrDefault(m => m.Id == id);
-        //    var model = brandRepository.Get(m => m.Id == id);
-        //    if (model == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    return View(model);
-        //}
-        //[HttpPost]
-        //public IActionResult Edit(Brand model)
-        //{
-        //    //var entityModel = db.Brands.FirstOrDefault(m => m.Id == model.Id);
-        //    //if (entityModel == null)
-        //    //{
-        //    //    return NotFound();
-        //    //}
-        //    //entityModel.Name = model.Name;
-        //    //db.SaveChanges();
-        //    brandRepository.Edit(model);
-        //    brandRepository.Save();
-        //    return RedirectToAction(nameof(Index));
-        //}
 
-        ////[HttpPost]
-        ////public IActionResult Delete(int id)
-        ////{
-        ////    var model = db.Brands.FirstOrDefault(m => m.Id == id && m.DeletedBy == null);
 
-        ////    if (model == null)
-        ////    {
-        ////        Response.Headers.Add("error", "true");
-        ////        Response.Headers.Add("message", "Qeyd mövcud deyil");
-        ////        return Content(""); 
-        ////    }
+        [HttpPost]
+        public async Task<IActionResult> Delete(BrandRemoveRequest request)
+        {
+            //var model = db.Brands.FirstOrDefault(m => m.Id == id && m.DeletedBy == null);
 
-        ////    model.DeletedBy = 1; 
-        ////    model.DeletedAt = DateTime.Now;
+            //if (model == null)
+            //{
+            //    Response.Headers.Add("error", "true");
+            //    Response.Headers.Add("message", "Qeyd mövcud deyil");
+            //    return Content("");
+            //}
 
-        ////    db.SaveChanges();
+            //model.DeletedBy = 1;
+            //model.DeletedAt = DateTime.Now;
 
-        ////    var brands = db.Brands
-        ////       .Where(m => m.DeletedBy == null)
-        ////       .ToList();
+            //db.SaveChanges();
 
-        ////    return PartialView("_Body", brands);
-        ////}
+
+            await mediator.Send(request);
+            //var brands = db.Brands
+            //   .Where(m => m.DeletedBy == null)
+            //   .ToList();
+
+            var response = await mediator.Send(new BrandGetAllRequest());
+
+            return PartialView("_Body", response);
+        }
+
         //[HttpPost]
         //public IActionResult Delete(int id)
         //{
