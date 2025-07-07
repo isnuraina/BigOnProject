@@ -35,6 +35,7 @@ namespace Bigon.WebUI
 
             builder.Services.AddSingleton<IEmailService, EmailService>();
             builder.Services.AddSingleton<IDateTimeService, DateTimeService>();
+            builder.Services.AddSingleton<IFileService, FileService>();
             builder.Services.AddScoped<IIdentityService, IdentityService>();
 
             builder.Services.AddMediatR(cfg =>
