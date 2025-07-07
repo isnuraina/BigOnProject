@@ -1,45 +1,50 @@
-﻿using Bigon.İnfrastructure.Entities;
+﻿using Bigon.Business.Modules.BlogPostModule.Commands.BlogPostAddCommand;
+using Bigon.Business.Modules.BlogPostModule.Commands.BlogPostRemoveCommand;
+using Bigon.Business.Modules.BlogPostModule.Queries.BlogPostGetAllQuery;
+using Bigon.Business.Modules.ColorsModule.Commands.ColorRemoveCommand;
+using Bigon.İnfrastructure.Entities;
+using Bigon.İnfrastructure.Services.Abstracts;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace Bigon.WebUI.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class BlogPostsController : Controller
     {
-        private readonly DbContext db;
-        private readonly IWebHostEnvironment environment;
+        private readonly IMediator mediator;
 
-        public BlogPostsController(DbContext db,IWebHostEnvironment environment)
+        public BlogPostsController(IMediator mediator)
         {
-            this.db = db;
-            this.environment = environment;
+            this.mediator = mediator;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index(BlogPostGetAllRequest request)
         {
-            return View();
+            var response = await mediator.Send(request);
+            return View(response);
         }
         public IActionResult Create()
         {
             return View();
         }
         [HttpPost]
-        public IActionResult Create(BlogPost model,IFormFile file)
+        public async Task<IActionResult> Create(BlogPostAddRequest request)
         {
-            string contentPath = environment.ContentRootPath;
-            string extension = Path.GetExtension(file.FileName);
-            string randomText = Guid.NewGuid().ToString();
-            string fileName = $"{randomText}{extension}";
-            string physicalPath = Path.Combine(contentPath, "wwwroot","uploads","img",fileName);
-            using(FileStream fs=new FileStream(physicalPath, FileMode.CreateNew, FileAccess.Write))
-            {
-                file.CopyTo(fs);
-            }
-            model.ImagePath = fileName;
-            model.Slug = model.Title;
-            db.Add(model);
-            db.SaveChanges();
-            return View();
+            var response = await mediator.Send(request);
+            return RedirectToAction(nameof(Index));
+        }
+        [HttpPost]
+        public async Task<IActionResult> Delete(BlogPostRemoveRequest request)
+        {
+            await mediator.Send(request);
+            return Json(
+                    new
+                    {
+                        error = false,
+                        message = "Qeyd silindi!"
+                    });
         }
     }
 }

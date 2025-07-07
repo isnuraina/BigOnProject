@@ -11,7 +11,6 @@ namespace Bigon.Data
     {
         public DataContext CreateDbContext(string[] args)
         {
-            // Startup layihəsinin kök qovluğunu götürürük (yəni WebUI)
             var basePath = Path.Combine(Directory.GetCurrentDirectory(), "../Bigon.WebUI");
 
             IConfigurationRoot configuration = new ConfigurationBuilder()
