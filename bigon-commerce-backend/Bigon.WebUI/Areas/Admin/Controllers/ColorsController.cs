@@ -3,13 +3,8 @@ using Bigon.Business.Modules.ColorsModule.Commands.ColorAddCommand;
 using Bigon.Business.Modules.ColorsModule.Commands.ColorEditCommand;
 using Bigon.Business.Modules.ColorsModule.Commands.ColorRemoveCommand;
 using Bigon.Business.Modules.ColorsModule.Queries.ColorGetAllQuery;
-using Bigon.Business.Modules.ColorsModule.Queries.ColorGetByIdQuery;
-using Bigon.İnfrastructure.Entities;
-using Bigon.İnfrastructure.Repositories;
-using Bigon.WebUI.Models.Persistences;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace Bigon.WebUI.Areas.Admin.Controllers
 {

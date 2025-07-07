@@ -15,4 +15,12 @@
     <ProjectReference Include="..\Bigon.İnfrastructure\Bigon.İnfrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Modules\BlogPostModule\Commands\BlogPostRemoveCommand\" />
+    <Folder Include="Modules\BlogPostModule\Commands\BlogPostEditCommand\" />
+    <Folder Include="Modules\BlogPostModule\Commands\BlogPostAddCommand\" />
+    <Folder Include="Modules\BlogPostModule\Queries\BlogPostGetAllQuery\" />
+    <Folder Include="Modules\BlogPostModule\Queries\BlogPostGetByIdQuery\" />
+  </ItemGroup>
+
 </Project>

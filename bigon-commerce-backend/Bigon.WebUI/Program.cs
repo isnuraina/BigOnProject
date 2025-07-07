@@ -1,9 +1,9 @@
 ﻿using Bigon.Business;
 using Bigon.Data;
+using Bigon.Data.Persistences;
 using Bigon.İnfrastructure.Services.Abstracts;
 using Bigon.İnfrastructure.Services.Concrates;
 using Bigon.İnfrastructure.Services.Configurations;
-using Bigon.WebUI.Models.Persistences;
 using Microsoft.EntityFrameworkCore;
 namespace Bigon.WebUI
 {

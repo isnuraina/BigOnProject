@@ -1,13 +1,11 @@
-﻿using Bigon.İnfrastructure.Extensions;
+﻿using Bigon.İnfrastructure.Entities;
+using Bigon.İnfrastructure.Extensions;
+using Bigon.İnfrastructure.Repositories;
 using Bigon.İnfrastructure.Services.Abstracts;
-using Bigon.İnfrastructure.Entities;
-using Bigon.WebUI.Models.Persistences;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Web;
-using Bigon.İnfrastructure.Repositories;
 
 namespace Bigon.WebUI.Controllers
 {
