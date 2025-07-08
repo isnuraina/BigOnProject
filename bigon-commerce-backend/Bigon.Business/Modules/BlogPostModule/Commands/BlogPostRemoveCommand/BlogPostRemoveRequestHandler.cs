@@ -10,7 +10,7 @@ namespace Bigon.Business.Modules.BlogPostModule.Commands.BlogPostRemoveCommand
 {
     //internal class BlogPostRemoveRequestHandler : IRequestHandler<BlogPostRemoveRequest>
     //{
-    //    private readonly IBlogPostRepository blogPostRepository;
+    //    private readonly IBlogPostRepository  blogPostRepository;
 
     //    public BlogPostRemoveRequestHandler(IBlogPostRepository blogPostRepository)
     //    {
