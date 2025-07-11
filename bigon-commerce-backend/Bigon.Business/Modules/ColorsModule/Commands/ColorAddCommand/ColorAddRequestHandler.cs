@@ -17,6 +17,7 @@ namespace Bigon.Business.Modules.ColorsModule.Commands.ColorAddCommand
             var color = new Color()
             {
                 Name = request.Name,
+
                 HexCode = request.HexCode
             };
             colorRepository.Add(color);
